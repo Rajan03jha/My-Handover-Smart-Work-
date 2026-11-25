@@ -9,7 +9,7 @@
 :root{--navy:#123b5d;--blue:#1e6da8;--teal:#0e9488;--bg:#f3f7fb;--ink:#152638;--muted:#617486;--line:#dce6ef;--white:#fff;--red:#d84b55;--green:#16855c;--amber:#d18a22;--shadow:0 10px 30px rgba(18,59,93,.08)}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
 header{background:linear-gradient(135deg,#123b5d,#1e6da8 70%,#0e9488);color:#fff;padding:22px 18px 26px;border-radius:0 0 28px 28px}
-.top{display:flex;justify-content:space-between;align-items:center;gap:10px}.brand{font-weight:800;font-size:19px;letter-spacing:.2px}.small{font-size:12px;opacity:.86}
+.top{display:flex;justify-content:space-between;align-items:center;gap:10px}.brand{font-weight:800;font-size:19px;letter-spacing:.2px;display:flex;align-items:center;gap:8px}.app-logo{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:12px;background:#ffffff20;border:1px solid #ffffff55;font-size:22px}.small{font-size:12px;opacity:.86}
 .mode-chip{border:1px solid #ffffff55;background:#ffffff18;border-radius:99px;padding:7px 10px;font-size:12px}
 .hero h1{font-size:24px;margin:16px 0 4px}.hero p{margin:0;opacity:.9;font-size:13px}
 main{max-width:760px;margin:auto;padding:14px 14px 100px}
@@ -32,10 +32,11 @@ input,select,textarea{width:100%;padding:11px 12px;border:1px solid #ccd9e4;bord
 </head>
 <body>
 <header>
- <div class="top"><div><div class="brand">🏥 Rajan Jha</div><div class="small">Hospital Room • Bed • Duty Handover</div></div><div class="mode-chip" id="modeChip">Personal Mode</div></div>
+ <div class="top"><div><div class="brand"><span class="app-logo">🏥</span> Hospital Bed Manager</div><div class="small">Room • Bed • Duty Handover</div></div><div class="mode-chip" id="modeChip">Personal Mode</div></div>
  <div class="hero"><h1>Hospital Bed Manager</h1><p>Department → Room → Unit → Bed → Patient</p></div>
 </header>
 <main>
+<div class="card duty-card" id="dutyCard"><div class="section-title" style="margin:0 0 8px"><h2>⏱ Duty Hours / ड्यूटी टाइम</h2><span class="badge" id="dutyBadge">OFF</span></div><label>Staff Name / ड्यूटी करने वाले का नाम (वैकल्पिक)</label><input id="staffName" placeholder="अपना नाम लिखें" oninput="saveStaffName(this.value)"><div style="font-size:25px;font-weight:850;letter-spacing:1px;margin:12px 0" id="dutyTime">00:00:00</div><div class="actions"><button id="dutyToggle" onclick="toggleDuty()">▶ Duty ON / शुरू करें</button><button class="secondary" onclick="resetDuty()">Reset</button></div><p class="small" style="color:var(--muted);margin-bottom:0">टाइम आपके डिवाइस में सेव होगा; इंटरनेट बंद होने पर भी चलेगा।</p></div>
 <div class="stats">
  <div class="stat"><strong id="statRooms">0</strong><span>Rooms</span></div>
  <div class="stat"><strong id="statBeds">0</strong><span>Total Beds</span></div>
@@ -77,7 +78,7 @@ input,select,textarea{width:100%;padding:11px 12px;border:1px solid #ccd9e4;bord
  <div class="card"><h3>Mode</h3><p>Personal Mode में अपने फोन पर निजी रिकॉर्ड रखें। Handover Mode में QR से दूसरे अधिकृत कर्मचारी को रिकॉर्ड सौंप सकते हैं।</p><button class="secondary" onclick="openMode()">Change Mode</button></div>
  <div class="card"><h3>Privacy / सुरक्षा</h3><div class="notice">यह ऐप डेटा आपके डिवाइस के ब्राउज़र में लोकल सेव करता है। वेबसाइट होस्ट करने वाले को लोकल डेटा अपने-आप नहीं मिलता, लेकिन फोन/ब्राउज़र बदलने, डेटा साफ करने या डिवाइस खोने पर रिकॉर्ड खो सकते हैं। यह एन्क्रिप्टेड मेडिकल रिकॉर्ड सिस्टम नहीं है। वास्तविक मरीजों की व्यक्तिगत/स्वास्थ्य जानकारी के लिए हॉस्पिटल की मंजूरी और सुरक्षित अधिकृत सिस्टम इस्तेमाल करें।</div>
  <div class="actions"><button class="secondary" onclick="exportBackup()">Download Backup</button><button class="danger" onclick="clearAll()">Delete All Local Data</button></div></div>
- <div class="card"><h3>Download / डाउनलोड</h3><p>ऐप की HTML फाइल डाउनलोड करके अपने फोन में सेव करें या शेयर किए बिना अपने निजी इस्तेमाल के लिए रखें।</p><div class="actions"><a class="btn" href="./index.html" download="Rajan-Jha-Hospital-Bed-Manager.html">⬇ Download HTML App</a><button class="secondary" onclick="alert('मोबाइल ब्राउज़र मेन्यू (⋮) खोलें और Add to Home Screen / Install चुनें, अगर उपलब्ध हो।')">📲 Install Help</button></div></div>
+ <div class="card"><h3>Download / डाउनलोड</h3><p>ऐप की HTML फाइल डाउनलोड करके अपने फोन में सेव करें या शेयर किए बिना अपने निजी इस्तेमाल के लिए रखें।</p><div class="actions"><button class="secondary" onclick="downloadAppHTML()">⬇ Download HTML App</button><button class="secondary" onclick="alert('मोबाइल ब्राउज़र मेन्यू (⋮) खोलें और Add to Home Screen / Install चुनें, अगर उपलब्ध हो।')">📲 Install Help</button></div></div>
  <div class="footer">Hospital Bed Manager • Personal organizer / shift handover helper</div>
 </div>
 </main>
@@ -100,6 +101,8 @@ const KEY='rj_hospital_bed_manager_v1';
 let data=load();
 let activeMode=data.mode||'personal';
 let scanner=null;
+let staffName=localStorage.getItem("rj_hbm_staff_name")||"";
+let dutyState=JSON.parse(localStorage.getItem("rj_hbm_duty")||"{\"running\":false,\"startedAt\":null,\"totalMs\":0}");
 function emptyData(){return {mode:'personal',departments:[],rooms:[],patients:{},handoverLog:[]}}
 function load(){try{return JSON.parse(localStorage.getItem(KEY))||emptyData()}catch(e){return emptyData()}}
 function save(){localStorage.setItem(KEY,JSON.stringify(data));render()}
@@ -124,6 +127,7 @@ function clearBed(roomId,n){if(!confirm('इस बेड की मरीज �
 function deptName(id){return data.departments.find(d=>d.id===id)?.name||'Unassigned'}
 function roomHTML(r){let occ=0;for(let i=1;i<=r.beds;i++)if(data.patients[bedKey(r.id,i)]?.name)occ++;return `<div class="card"><div class="item"><div><h3>Room ${esc(r.number)} ${r.unit?`• ${esc(r.unit)}`:''}</h3><p>${esc(deptName(r.deptId))} · Doctor: ${esc(r.doctor||'—')} · ${occ}/${r.beds} occupied</p></div><button class="ghost smallbtn" onclick="openRoomForm('${r.id}')">Edit</button></div><div class="roomgrid">${Array.from({length:r.beds},(_,i)=>{let n=i+1,p=data.patients[bedKey(r.id,n)];let occupied=!!p?.name;return `<button class="bed ${occupied?'busy':''}" onclick="openBed('${r.id}',${n})"><span class="bedname">🛏 Bed ${n} <span class="badge ${occupied?'busy':p?.status==='reserved'?'reserved':''}">${occupied?'Occupied':p?.status==='reserved'?'Reserved':'Available'}</span></span><small>${occupied?esc(p.name)+(p.patientId?' • '+esc(p.patientId):''):'Tap to add patient'}</small></button>`}).join('')}</div></div>`}
 function render(){document.getElementById('modeChip').textContent=activeMode==='handover'?'Duty Handover Mode':'Personal Mode';let rooms=data.rooms||[],total=rooms.reduce((a,r)=>a+r.beds,0),occupied=Object.values(data.patients).filter(p=>p.name).length;document.getElementById('statRooms').textContent=rooms.length;document.getElementById('statBeds').textContent=total;document.getElementById('statOccupied').textContent=occupied;
+let nm=document.getElementById('staffName');if(nm&&nm.value!==staffName)nm.value=staffName;updateDutyUI();
 document.getElementById('dashboardRooms').innerHTML=rooms.slice(0,4).map(roomHTML).join('')||'<div class="empty">अभी कमरे नहीं बने। Add Room से शुरू करें।</div>';
 document.getElementById('deptList').innerHTML=data.departments.map(d=>`<div class="card item"><div><h3>${esc(d.name)}</h3><p>${data.rooms.filter(r=>r.deptId===d.id).length} rooms ${d.note?'• '+esc(d.note):''}</p></div><button class="ghost smallbtn" onclick="openDeptForm('${d.id}')">Edit</button></div>`).join('')||'<div class="empty">Department नहीं है।</div>';
 document.getElementById('roomList').innerHTML=rooms.map(roomHTML).join('')||'<div class="empty">कमरे जोड़ने के लिए Add Room दबाएं।</div>';
@@ -139,9 +143,16 @@ function receivePayload(txt){try{let p=JSON.parse(txt);if(p.app!=='RJHBM'||!p.da
 function exportBackup(){let b={app:'RJHBM',version:1,exported:new Date().toISOString(),data};let blob=new Blob([JSON.stringify(b,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='hospital-handover-backup-'+new Date().toISOString().slice(0,10)+'.json';a.click();URL.revokeObjectURL(a.href)}
 function importBackup(file){if(!file)return;let reader=new FileReader();reader.onload=()=>{try{let b=JSON.parse(reader.result);if(b.app!=='RJHBM'||!b.data)throw Error('Wrong file');if(!confirm('Import से वर्तमान डेटा replace होगा। पहले backup लें। आगे बढ़ें?'))return;data=b.data;activeMode=data.mode||'personal';save();alert('Backup Import हो गया')}catch(e){alert('फाइल सही backup नहीं है')}};reader.readAsText(file);document.getElementById('importFile').value=''}
 function clearAll(){if(!confirm('सभी लोकल डेटा हमेशा के लिए हटाएं? पहले backup बना लें।'))return;data=emptyData();activeMode='personal';save()}
+function saveStaffName(v){staffName=v;localStorage.setItem('rj_hbm_staff_name',v)}
+function dutyElapsed(){return (dutyState.totalMs||0)+(dutyState.running&&dutyState.startedAt?Date.now()-dutyState.startedAt:0)}
+function fmtDuration(ms){let sec=Math.floor(ms/1000),h=Math.floor(sec/3600),m=Math.floor((sec%3600)/60),s=sec%60;return [h,m,s].map(n=>String(n).padStart(2,'0')).join(':')}
+function updateDutyUI(){let t=document.getElementById('dutyTime'),b=document.getElementById('dutyBadge'),btn=document.getElementById('dutyToggle');if(!t)return;t.textContent=fmtDuration(dutyElapsed());b.textContent=dutyState.running?'ON • Running':'OFF';b.className='badge'+(dutyState.running?' busy':'');btn.textContent=dutyState.running?'■ Duty OFF / समाप्त करें':'▶ Duty ON / शुरू करें';btn.className=dutyState.running?'danger':'';}
+function toggleDuty(){if(dutyState.running){dutyState.totalMs=(dutyState.totalMs||0)+Date.now()-dutyState.startedAt;dutyState.running=false;dutyState.startedAt=null}else{dutyState.running=true;dutyState.startedAt=Date.now()}localStorage.setItem('rj_hbm_duty',JSON.stringify(dutyState));updateDutyUI();}
+function resetDuty(){if(!confirm('Duty timer का कुल समय reset करें?'))return;dutyState={running:false,startedAt:null,totalMs:0};localStorage.setItem('rj_hbm_duty',JSON.stringify(dutyState));updateDutyUI()}
+function downloadAppHTML(){try{let clone=document.documentElement.cloneNode(true);clone.querySelectorAll('.modal,.creator-modal').forEach(el=>el.classList.remove('show'));let html='<!DOCTYPE html>\n'+clone.outerHTML;let blob=new Blob([html],{type:'text/html;charset=utf-8'});let a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='Hospital-Bed-Manager.html';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1500)}catch(e){alert('डाउनलोड नहीं हो सका। ब्राउज़र मेन्यू से Save page करें।')}}
 function openCreator(){document.getElementById('creatorModal').classList.add('show')}
 function closeCreator(){document.getElementById('creatorModal').classList.remove('show')}
-render();if(!data.mode)openMode();
+render();setInterval(updateDutyUI,1000);if(!data.mode)openMode();
 </script>
 </body>
 </html>
